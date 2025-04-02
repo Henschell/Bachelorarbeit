@@ -1,0 +1,105 @@
+<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>Henschell</groupId>
+    <artifactId>UML-Grader</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+    <dependencies>
+        <!-- EMF Core -->        
+<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.common -->
+<dependency>
+    <groupId>org.eclipse.emf</groupId>
+    <artifactId>org.eclipse.emf.common</artifactId>
+    <version>2.28.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.ecore -->
+<dependency>
+    <groupId>org.eclipse.emf</groupId>
+    <artifactId>org.eclipse.emf.ecore</artifactId>
+    <version>2.33.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.ecore.xmi -->
+<dependency>
+    <groupId>org.eclipse.emf</groupId>
+    <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+    <version>2.36.0</version>
+</dependency>
+        <!-- UML2 -->
+<dependency>
+    <groupId>org.eclipse.uml2</groupId>
+    <artifactId>org.eclipse.uml2.uml</artifactId>
+    <version>5.0.1.v20140910-1354</version>
+</dependency>
+<!-- Add other missing dependencies as needed, e.g., OSGi, Equinox, etc. -->	
+        <!-- XML-Verarbeitung für ProFormA -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.8</version>
+        </dependency>
+        <!-- Zusätzliche Abhängigkeiten für JAXB/ProFormA -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.activation</groupId>
+            <artifactId>jakarta.activation</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+<!-- https://mvnrepository.com/artifact/com.sun.istack/istack-commons-runtime -->
+<dependency>
+    <groupId>com.sun.istack</groupId>
+    <artifactId>istack-commons-runtime</artifactId>
+    <version>4.1.1</version>
+</dependency>
+    </dependencies>
+    
+    <repositories>
+    
+    	
+        <repository>
+            <id>eclipse-emf</id>
+            <url>https://download.eclipse.org/modeling/emf/emf/builds/release/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>eclipse</id>
+            <url>https://repo.eclipse.org/content/groups/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
