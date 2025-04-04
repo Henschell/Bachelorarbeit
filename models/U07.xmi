@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_NC7mYBDWEfCcOKKy0hc0LQ" name="U07">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_NNHdIBDWEfCcOKKy0hc0LQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_5r1ZYBDWEfCcOKKy0hc0LQ" name="Einwohner" visibility="public">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_qtGTwBDXEfCcOKKy0hc0LQ" name="Name" visibility="public" aggregation="composite">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_MPSRABDYEfCcOKKy0hc0LQ" name="Einwohner">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_9Rj4ABDYEfCcOKKy0hc0LQ" name="name" visibility="public" effect="create">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_VeNCMBDZEfCcOKKy0hc0LQ" name="zieheUm">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_cD2ggBDZEfCcOKKy0hc0LQ" name="Parameter1" visibility="public" type="_PcXtgBDXEfCcOKKy0hc0LQ" effect="update"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_PcXtgBDXEfCcOKKy0hc0LQ" name="Adresse"/>
+</uml:Model>

@@ -34,6 +34,19 @@
     <artifactId>org.eclipse.uml2.uml</artifactId>
     <version>5.0.1.v20140910-1354</version>
 </dependency>
+<!-- https://mvnrepository.com/artifact/org.eclipse.uml2/org.eclipse.uml2.types -->
+<dependency>
+    <groupId>org.eclipse.uml2</groupId>
+    <artifactId>org.eclipse.uml2.types</artifactId>
+    <version>2.0.0.v20140910-1354</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.eclipse.uml2/org.eclipse.uml2.common -->
+<!-- https://mvnrepository.com/artifact/org.eclipse.uml2/common -->
+<dependency>
+    <groupId>org.eclipse.uml2</groupId>
+    <artifactId>common</artifactId>
+    <version>1.8.2-v20140202-2055</version>
+</dependency>
 <!-- Add other missing dependencies as needed, e.g., OSGi, Equinox, etc. -->	
         <!-- XML-Verarbeitung für ProFormA -->
         <dependency>
