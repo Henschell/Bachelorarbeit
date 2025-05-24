@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<task xmlns="urn:proforma:v2.1" uuid="550e8400-e29b-41d4-a716-446655440000" lang="de">
+    <title>Erstellung eines UML-Klassendiagramms</title>
+    <description><![CDATA[<p>Erstellen Sie ein UML-Klassendiagramm für ein System mit Klassen 'Einwohner' und 'Adresse'. Beachten Sie die Namenskonventionen und Konsistenzregeln.</p>]]></description>
+    <internal-description><![CDATA[<p>Für Lehrer: Prüfen Sie die UML-Konsistenz und Namenskonventionen anhand der Tests. Eine Musterlösung ist verfügbar.</p>]]></internal-description>
+    <proglang version="2.0">uml</proglang>
+    <submission-restrictions max-size="100000">
+        <file-restriction pattern-format="posix-ere">^.+\.xmi$</file-restriction>
+    </submission-restrictions>
+    <files>
+        <file id="modelSolutionFile" used-by-grader="true" visible="no" usage-by-lms="download">
+            <embedded-txt-file filename="model_solution.xmi"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!-- Platzhalter für eine Musterlösungs-XMI-Datei -->
+<uml:Model ...>...</uml:Model>]]></embedded-txt-file>
+        </file>
+        <!-- Optional: Weitere Dateien können hier hinzugefügt werden -->
+    </files>
+    <model-solutions>
+        <model-solution id="model1">
+            <filerefs>
+                <fileref refid="modelSolutionFile"/>
+            </filerefs>
+            <description><![CDATA[<p>Dies ist eine Musterlösung für das UML-Klassendiagramm.</p>]]></description>
+            <internal-description><![CDATA[<p>Interne Hinweise: Die Musterlösung enthält alle erforderlichen Klassen und Assoziationen.</p>]]></internal-description>
+        </model-solution>
+    </model-solutions>
+    <tests>
+        <test id="test1" validity="1.0">
+            <title>Prüfung der Feldnamenskonventionen</title>
+            <description>Test, ob Attributnamen mit Kleinbuchstaben beginnen.</description>
+            <test-type>uml-check</test-type>
+            <test-configuration/>
+        </test>
+        <test id="test2" validity="1.0">
+            <title>Prüfung der Methodennamenskonventionen</title>
+            <description>Test, ob Methodennamen den Java-Namenskonventionen entsprechen (z. B. Kleinbuchstaben, camelCase).</description>
+            <test-type>uml-check</test-type>
+            <test-configuration/>
+        </test>
+        <test id="test3" validity="1.0">
+            <title>Prüfung der Klassennamenskonventionen</title>
+            <description>Test, ob Klassennamen mit Großbuchstaben beginnen und den Java-Namenskonventionen entsprechen.</description>
+            <test-type>uml-check</test-type>
+            <test-configuration/>
+        </test>
+        <test id="test4" validity="1.0">
+            <title>Prüfung auf private Attribute</title>
+            <description>Test, ob alle Attribute privat sind.</description>
+            <test-type>uml-check</test-type>
+            <test-configuration/>
+        </test>
+        <test id="test5" validity="1.0">
+            <title>Prüfung auf Getter für private Attribute</title>
+            <description>Test, ob alle privaten Attribute Getter-Methoden haben.</description>
+            <test-type>uml-check</test-type>
+            <test-configuration/>
+        </test>
+        <test id="test6" validity="1.0">
+            <title>Prüfung auf Setter für private Attribute</title>
+            <description>Test, ob alle privaten Attribute Setter-Methoden haben.</description>
+            <test-type>uml-check</test-type>
+            <test-configuration/>
+        </test>
+        <test id="test7" validity="1.0">
+            <title>Prüfung auf Konstruktor</title>
+            <description>Test, ob ein Konstruktor vorhanden ist und den Konventionen entspricht.</description>
+            <test-type>uml-check</test-type>
+            <test-configuration/>
+        </test>
+        <test id="test8" validity="1.0">
+            <title>Prüfung der Assoziationskonsistenz</title>
+            <description>Test, ob Assoziationen konsistent definiert sind.</description>
+            <test-type>uml-check</test-type>
+            <test-configuration/>
+        </test>
+        <test id="test9" validity="1.0">
+            <title>Prüfung auf Mindestanzahl an Attributen oder Methoden</title>
+            <description>Test, ob eine Klasse mindestens ein Attribut oder eine Methode enthält.</description>
+            <test-type>uml-check</test-type>
+            <test-configuration/>
+        </test>
+        <test id="test10" validity="1.0">
+            <title>Prüfung auf mindestens eine Klasse</title>
+            <description>Test, ob mindestens eine Klasse im Modell vorhanden ist.</description>
+            <test-type>uml-check</test-type>
+            <test-configuration/>
+        </test>
+    </tests>
+    <grading-hints>
+        <root id="root1" function="sum">
+            <title>Gesamtpunktzahl</title>
+            <test-ref ref="test1" sub-ref="FieldNamingConventions" weight="0.5"/>
+            <test-ref ref="test2" sub-ref="MethodNamingConventions" weight="0.5"/>
+            <test-ref ref="test3" sub-ref="ClassNamingConventions" weight="0.5"/>
+            <test-ref ref="test4" sub-ref="attributesShouldBePrivate" weight="0.5"/>
+            <test-ref ref="test5" sub-ref="attributesShouldHaveGetters" weight="0.5"/>
+            <test-ref ref="test6" sub-ref="attributesShouldHaveSetters" weight="0.5"/>
+            <test-ref ref="test7" sub-ref="constructorShouldExist" weight="0.5"/>
+            <test-ref ref="test8" sub-ref="associationConsistency" weight="0.5"/>
+            <test-ref ref="test9" sub-ref="minimumAttributesOrMethods" weight="0.5"/>
+            <test-ref ref="test10" sub-ref="minimumOneClass" weight="0.5"/>
+        </root>
+    </grading-hints>
+    <meta-data>
+        <custom xmlns="http://example.com/metadata">Kurs: UML101</custom>
+    </meta-data>
+</task>

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_NC7mYBDWEfCcOKKy0hc0LQ" name="U07">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_NNHdIBDWEfCcOKKy0hc0LQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_r6iRkBl6EfCqDZbADY2iqg">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_nHKXQBl8EfCqDZbADY2iqg">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
   <packagedElement xmi:type="uml:Model" xmi:id="_uRzZABl8EfCqDZbADY2iqg" name="PrimitiveTypes" URI="http://www.omg.org/spec/PrimitiveTypes/20131001">
     <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_uR0AEBl8EfCqDZbADY2iqg" name="Boolean">
       <ownedComment xmi:type="uml:Comment" xmi:id="_uR0AERl8EfCqDZbADY2iqg" annotatedElement="_uR0AEBl8EfCqDZbADY2iqg">
@@ -41,10 +50,6 @@
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_5r1ZYBDWEfCcOKKy0hc0LQ" name="Einwohner" visibility="public">
     <ownedAttribute xmi:type="uml:Property" xmi:id="_qtGTwBDXEfCcOKKy0hc0LQ" name="Name" visibility="public" type="_uR0AFhl8EfCqDZbADY2iqg" aggregation="composite"/>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_TTWe0hnaEfClTfToKBy9gg" name="wohnort" type="_PcXtgBDXEfCcOKKy0hc0LQ" association="_TTVQsBnaEfClTfToKBy9gg">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_TTXF4BnaEfClTfToKBy9gg"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_TTXF4RnaEfClTfToKBy9gg" value="1"/>
-    </ownedAttribute>
     <ownedOperation xmi:type="uml:Operation" xmi:id="_MPSRABDYEfCcOKKy0hc0LQ" name="Einwohner">
       <ownedParameter xmi:type="uml:Parameter" xmi:id="_9Rj4ABDYEfCcOKKy0hc0LQ" name="name" visibility="public" effect="create">
         <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
@@ -55,16 +60,9 @@
     </ownedOperation>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_PcXtgBDXEfCcOKKy0hc0LQ" name="Adresse">
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_jk5egBmJEfClTfToKBy9gg" name="test" visibility="public">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_QzXoQBmAEfClTfToKBy9gg" name="hausnummer" visibility="public">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
     </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_3KPpoBnaEfClTfToKBy9gg" name="hausnummer" visibility="public" type="_uR0AEhl8EfCqDZbADY2iqg"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_TTVQsBnaEfClTfToKBy9gg" memberEnd="_TTWe0hnaEfClTfToKBy9gg _TTXF4hnaEfClTfToKBy9gg">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_TTWe0BnaEfClTfToKBy9gg" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_TTWe0RnaEfClTfToKBy9gg" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_TTXF4hnaEfClTfToKBy9gg" type="_5r1ZYBDWEfCcOKKy0hc0LQ" association="_TTVQsBnaEfClTfToKBy9gg"/>
   </packagedElement>
   <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_3_8ZoBl5EfCqDZbADY2iqg">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_4ACgQBl5EfCqDZbADY2iqg" source="http://www.eclipse.org/uml2/2.0.0/UML">

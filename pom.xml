@@ -41,6 +41,23 @@
     <version>2.0.0.v20140910-1354</version>
 </dependency>
 <!-- https://mvnrepository.com/artifact/org.eclipse.uml2/org.eclipse.uml2.common -->
+<!-- https://mvnrepository.com/artifact/org.eclipse.uml2/org.eclipse.uml2.uml.resources -->
+<dependency>
+    <groupId>org.eclipse.uml2</groupId>
+    <artifactId>org.eclipse.uml2.uml.resources</artifactId>
+    <version>3.1.0.v201005031530</version>
+    <scope>runtime</scope>
+</dependency>
+<dependency>
+    <groupId>proforma</groupId>
+    <artifactId>proformaxml-2-1</artifactId>
+    <version>0.2.1</version>
+</dependency>
+<dependency>
+    <groupId>proforma</groupId>
+    <artifactId>proformaxml</artifactId>
+    <version>0.2.1</version>
+</dependency>
 <!-- https://mvnrepository.com/artifact/org.eclipse.uml2/common -->
 <dependency>
     <groupId>org.eclipse.uml2</groupId>
@@ -70,6 +87,12 @@
             <artifactId>jakarta.activation</artifactId>
             <version>1.2.2</version>
         </dependency>
+<dependency>
+    <groupId>org.glassfish.jaxb</groupId>
+    <artifactId>jaxb-runtime</artifactId>
+    <version>2.3.8</version>
+</dependency>
+
 <!-- https://mvnrepository.com/artifact/com.sun.istack/istack-commons-runtime -->
 <dependency>
     <groupId>com.sun.istack</groupId>

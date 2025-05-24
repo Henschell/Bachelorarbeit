@@ -1,57 +1,61 @@
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.uml2.uml.resource.UMLResource;
-import org.eclipse.uml2.uml.*;
-import org.eclipse.uml2.uml.Class;
-
-public class UMLBewertungstoolTest {
-    public static void main(String[] args) {
-//        if (args.length < 1) {
-//            System.out.println("Bitte geben Sie den Pfad zur XMI-Datei an.");
-//            return;
+//
+//import java.util.List;
+//import java.io.File;
+//
+//import javax.xml.bind.JAXBContext;
+//import javax.xml.bind.Marshaller;
+//
+//import org.eclipse.uml2.uml.Class;
+//
+//import proformA.ResponseXmlGenerator;
+//import proformA.SubmissionXmlGenerator;
+//import proforma.xml21.FeedbackType;
+//import proforma.xml21.ResponseType;
+//import proforma.xml21.TestResponseType;
+//import proforma.xml21.TestResultType;
+//import umlParser.UmlModelParser;
+//
+//
+//public class UMLBewertungstoolTest {
+//    public static void main(String[] args) {
+//        String xmiFilePath = "models/U09xmiTest.xmi";
+//        String submissionXmlPath = "models/submission2.xml";
+//
+//        try {
+//            // Schritt 1: XMI-Datei in submission.xml einbetten (für Testzwecke)
+//            SubmissionXmlGenerator submissionGenerator = new SubmissionXmlGenerator();
+//            submissionGenerator.createSubmissionXml(xmiFilePath, submissionXmlPath);
+//            
+//            
+//            UmlModelParser parser = new UmlModelParser();
+//            List<org.eclipse.uml2.uml.Class> umlClasses = parser.parse(xmiFilePath);
+//            for (Class umlClass : umlClasses) {
+//                System.out.println(parser.formatUmlClass(umlClass));
+//            }
+//            
+//            // Generiere die Response basierend auf den allgemeinen Prüfkriterien
+//            ResponseXmlGenerator generator = new ResponseXmlGenerator();
+//            ResponseType response = generator.generateResponse(umlClasses);
+//            
+//            // Schreibe die Response in eine XML-Datei
+//            JAXBContext context = JAXBContext.newInstance(ResponseType.class);
+//            Marshaller marshaller = context.createMarshaller();
+//            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//            marshaller.marshal(response, new File("models/response.xml"));
+//            
+//            // Ausgabe zur Überprüfung
+//            for (TestResponseType testResponse : response.getSeparateTestFeedback().getTestsResponse().getTestResponse()) {
+//            	System.out.println("Test: " + testResponse.getId());
+//            	TestResultType testResult = testResponse.getTestResult();
+//            	if (testResult != null && testResult.getFeedbackList() != null) {
+//            		for (FeedbackType feedback : testResult.getFeedbackList().getStudentFeedback()) {
+//            			System.out.println("Feedback: " + feedback.getContent().getValue());
+//            		}
+//            	}
+//            }
+//        } catch (Exception e) {
+//            System.err.println("Fehler: " + e.getMessage());
+//            e.printStackTrace();
 //        }
-//        String xmiFilePath = args[0];
-    	String xmiFilePath = "models/U07.xmi";
-        try {
-            // ResourceSet für EMF erstellen
-            ResourceSet resourceSet = new ResourceSetImpl();
-            resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-            resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-                .put("xmi", UMLResource.Factory.INSTANCE);
-            resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-            .put("uml", UMLResource.Factory.INSTANCE);
-
-            // XMI-Datei laden
-            Resource resource = resourceSet.getResource(URI.createFileURI(xmiFilePath), true);
-            Model umlModel = (Model) resource.getContents().get(0);
-
-            // Beispiel: Modellname ausgeben
-            System.out.println("Geladenes UML-Modell: " + umlModel.getName());
-            
-         // Alle Klassen im Modell durchsuchen
-            for (Element element : umlModel.getOwnedElements()) {
-                if (element instanceof Class) {
-                    Class umlClass = (Class) element;
-                    System.out.println("Klasse gefunden: " + umlClass.getName());
-
-                    // Attribute auslesen
-                    System.out.println("  Attribute:");
-                    for (Property attribute : umlClass.getOwnedAttributes()) {
-                        System.out.println("    - " + attribute.getName() + " (" + attribute.getType().getName() + ")");
-                    }
-
-                    // Methoden (Operationen) auslesen
-                    System.out.println("  Methoden:");
-                    for (Operation operation : umlClass.getOwnedOperations()) {
-                        System.out.println("    - " + operation.getName() + "()");
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Fehler beim Laden der XMI-Datei: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-}
+//    }
+//}
