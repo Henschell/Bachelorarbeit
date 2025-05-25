@@ -3,7 +3,9 @@ package umlParser;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.Model;
@@ -13,10 +15,13 @@ import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
+import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Association;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Die Klasse {@code UmlModelParser} parst eine XMI-Datei und gibt eine Liste von UML-Klassen zurück.
@@ -29,49 +34,135 @@ public class UmlModelParser {
      * @return Liste von UML-Klassen
      * @throws Exception bei Fehlern beim Laden oder Parsen
      */
-    public List<Class> parse(String xmiFilePath) throws Exception {
-        List<Class> umlClasses = new ArrayList<>();
+	private static final ArrayList<String> UML_NAMESPACES = new ArrayList<String>();
+	private static final ArrayList<String> UML_Extensions = new ArrayList<String>();
+	private static final ArrayList<String> UML_Protocols = new ArrayList<String>();
+	static {
+	    UML_NAMESPACES.add(UMLPackage.eNS_URI);
+	    UML_NAMESPACES.add("http://www.omg.org/spec/UML/20110701");
+	    UML_NAMESPACES.add("http://www.eclipse.org/uml2/5.0.0/UML");
+	    UML_NAMESPACES.add("http://schema.omg.org/spec/UML/2.0");
+	    UML_NAMESPACES.add("http://www.eclipse.org/uml2/2.0.0/UML");
+	    UML_Extensions.add(UMLResource.FILE_EXTENSION);
+	    UML_Extensions.add("xmi");
+	    UML_Protocols.add("pathmap");
+	}
+	
+	private void registerUMLNamespaces(ResourceSet rs) {
+		
+		for (String namespace : UML_NAMESPACES) {
+			rs.getPackageRegistry().put(namespace, UMLPackage.eINSTANCE);
+		}
+	}
+	private void registerUMLExtensions(ResourceSet rs) {
+		for (String extension : UML_Extensions) {
+			rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(extension,UMLResource.Factory.INSTANCE);			
+		}
+	}
+	private void registerUMLProtocols(ResourceSet rs) {
+		for (String protocol : UML_Protocols) {
+			rs.getResourceFactoryRegistry().getProtocolToFactoryMap().put(protocol, UMLResource.Factory.INSTANCE);
+		}
+	}
+	private Resource loadPrimitiveTypesResource(ResourceSet resourceSet, String primitiveTypesPath, URI primitiveTypesURI) throws Exception {
+	    resourceSet.getURIConverter().getURIMap().put(
+	            URI.createURI("pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml"),
+	            URI.createFileURI("models/UML_LIBRARIES/JavaPrimitiveTypes.library.uml")
+	    );
 
-        ResourceSet resourceSet = new ResourceSetImpl();
+	    Resource primitiveTypesResource = resourceSet.getResource(primitiveTypesURI, true);
+	    if (primitiveTypesResource == null || primitiveTypesResource.getContents().isEmpty()) {
+	        System.out.println("Fehler: JavaPrimitiveTypes.library.um konnte nicht geladen werden. Pfad: " + primitiveTypesPath);
+	        throw new Exception("JavaPrimitiveTypes.library.um konnte nicht geladen werden.");
+	    }
+	    System.out.println("JavaPrimitiveTypes.library.um erfolgreich geladen mit " + primitiveTypesResource.getContents().size() + " Elementen.");
+	    return primitiveTypesResource;
+	}
+	private void debugResourceContents(Resource resource) {
+	    for (Object content : resource.getContents()) {
+	        if (content instanceof org.eclipse.uml2.uml.Model) {
+	            org.eclipse.uml2.uml.Model model = (org.eclipse.uml2.uml.Model) content;
+	            System.out.println("Model: " + model.getName());
+	            for (Element elem : model.getOwnedElements()) {
+	                if (elem instanceof PrimitiveType) {
+	                    PrimitiveType pt = (PrimitiveType) elem;
+	                    System.out.println("  PrimitiveType: " + pt.getName() + " (xmi:id: " + pt.eResource().getURIFragment(pt) + ")");
+	                }
+	            }
+	        }
+	    }
+	}
+	private void debugAvailableResources(ResourceSet resourceSet) {
+	    System.out.println("Verfügbare Ressourcen im ResourceSet:");
+	    for (Resource res : resourceSet.getResources()) {
+	        System.out.println("  - " + res.getURI());
+	    }
+	}
+	public List<Class> parse(String xmiFilePath) throws Exception {
+	    List<Class> umlClasses = new ArrayList<>();
 
-        resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put("http://www.omg.org/spec/UML/20110701", UMLPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put("http://www.eclipse.org/uml2/5.0.0/UML", UMLPackage.eINSTANCE);
+	    ResourceSet resourceSet = new ResourceSetImpl();
+	    registerUMLNamespaces(resourceSet);
+	    registerUMLExtensions(resourceSet);
+	    registerUMLProtocols(resourceSet);
 
-        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-                .put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
-        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-                .put("xmi", UMLResource.Factory.INSTANCE);
+	    String javaPrimitiveTypesPath = "models/UML_LIBRARIES/JavaPrimitiveTypes.library.uml";
+        URI primitiveTypesURI = URI.createFileURI(javaPrimitiveTypesPath);
+        Resource primitiveTypesResource = loadPrimitiveTypesResource(resourceSet, javaPrimitiveTypesPath, primitiveTypesURI);
 
-        Resource resource = resourceSet.getResource(URI.createFileURI(xmiFilePath), true);
+        // Debugging-Ausgaben
+        //debugResourceContents(primitiveTypesResource);
+        //debugAvailableResources(resourceSet);
 
-        Model umlModel = null;
-        for (Object content : resource.getContents()) {
-            if (content instanceof Model) {
-                umlModel = (Model) content;
-                break;
-            }
-        }
+        // Lade die Haupt-XMI-Datei
+        Resource resource = resourceSet.createResource(URI.createFileURI(xmiFilePath));
+        ((ResourceImpl) resource).setIntrinsicIDToEObjectMap(null);
 
-        if (umlModel == null) {
-            throw new Exception("Kein UML-Modell in der XMI-Datei gefunden.");
-        }
+        Map<String, Object> loadOptions = new HashMap<>();
+        loadOptions.put(XMLResource.OPTION_PROCESS_DANGLING_HREF, XMLResource.OPTION_PROCESS_DANGLING_HREF_RECORD);
+        loadOptions.put(XMLResource.OPTION_EXTENDED_META_DATA, Boolean.TRUE);
+	    try {
+	        resource.load(loadOptions);
+	    } catch (Exception e) {
+	        System.out.println("Warnung: Fehler beim Laden der XMI-Datei (möglicherweise Stereotypen): " + e.getMessage());
+	    }
 
-        for (Element element : umlModel.getOwnedElements()) {
-            if (element instanceof org.eclipse.uml2.uml.Package) {
-                org.eclipse.uml2.uml.Package pkg = (org.eclipse.uml2.uml.Package) element;
-                if (pkg.getName().equals("u09")) {
-                    for (Element subElement : pkg.getOwnedElements()) {
-                        if (subElement instanceof Class) {
-                            umlClasses.add((Class) subElement);
-                        }
-                    }
-                }
-            }
-        }
+	    if (resource.getContents().isEmpty()) {
+	        throw new Exception("Kein Inhalt in der XMI-Datei gefunden.");
+	    }
 
-        return umlClasses;
-    }
+	    Model umlModel = null;
+	    for (Object content : resource.getContents()) {
+	        if (content instanceof Model) {
+	            umlModel = (Model) content;
+	            break;
+	        }
+	    }
+
+	    if (umlModel == null) {
+	        throw new Exception("Kein UML-Modell in der XMI-Datei gefunden.");
+	    }
+
+	    findClasses(umlModel, umlClasses);
+
+	    return umlClasses;
+	}
+
+	private void findClasses(Element element, List<Class> umlClasses) {
+	    if (element instanceof org.eclipse.uml2.uml.Package) {
+	    	org.eclipse.uml2.uml.Package pkg = (org.eclipse.uml2.uml.Package) element;
+	        // Ignoriere Pakete wie "java", "util" und "PrimitiveTypes"
+	        String pkgName = pkg.getName();
+	        if (pkgName != null && (pkgName.equals("java") || pkgName.equals("util") || pkgName.equals("PrimitiveTypes"))) {
+	            return; // Überspringe diese Pakete
+	        }
+	        for (Element subElement : pkg.getOwnedElements()) {
+	            findClasses(subElement, umlClasses);
+	        }
+	    } else if (element instanceof Class) {
+	        umlClasses.add((Class) element);
+	    }
+	}
 
     /**
      * Formatiert eine UML-Klasse als String im gewünschten Ausgabeformat.
@@ -164,7 +255,7 @@ public class UmlModelParser {
         try {
             UmlModelParser parser = new UmlModelParser();
             // Pfad zur XMI-Datei anpassen
-            String xmiFilePath = "models/U09xmiTest.xmi";
+            String xmiFilePath = "models/U09Papyrus.uml";
             System.out.println("ProFormA submission.xml erstellt: models/submission2.xml");
             List<Class> umlClasses = parser.parse(xmiFilePath);
             for (Class umlClass : umlClasses) {

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+    <uml:Model xmi:id="_JavaPrimitiveTypes_Model" name="JavaPrimitiveTypes" URI="http://www.omg.org/spec/PrimitiveTypes/20131001">
+        <packagedElement xmi:type="uml:PrimitiveType" xmi:id="int" name="int"/>
+        <packagedElement xmi:type="uml:PrimitiveType" xmi:id="boolean" name="boolean"/>
+        <packagedElement xmi:type="uml:PrimitiveType" xmi:id="float" name="float"/>
+        <packagedElement xmi:type="uml:PrimitiveType" xmi:id="double" name="double"/>
+        <packagedElement xmi:type="uml:PrimitiveType" xmi:id="long" name="long"/>
+        <packagedElement xmi:type="uml:PrimitiveType" xmi:id="short" name="short"/>
+        <packagedElement xmi:type="uml:PrimitiveType" xmi:id="byte" name="byte"/>
+        <packagedElement xmi:type="uml:PrimitiveType" xmi:id="char" name="char"/>
+    </uml:Model>
+</xmi:XMI>

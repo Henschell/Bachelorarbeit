@@ -291,9 +291,9 @@ public class TaskXmlParser {
             }
 
             // Lade UML-Klassen aus der XMI-Datei
-            String xmiFilePath = "models/U09xmiTest.xmi";
-            //String xmiFilePath = "models/U09VisualParadigmUML2.xmi";
-            //String xmiFilePath = "models/U09VisualParadigmXmi21.xmi";
+           // String xmiFilePath = "models/U09xmiTest.xmi";
+            String xmiFilePath = "models/U09VisualParadigmUML2v2.xmi";
+            //String xmiFilePath = "models/U09PapyrusCorrect.uml";
             List<Class> umlClasses = umlParser.parse(xmiFilePath);
             System.out.println("Geladene UML-Klassen:");
             for (Class umlClass : umlClasses) {
