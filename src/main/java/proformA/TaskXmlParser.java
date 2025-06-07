@@ -5,7 +5,13 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,59 +19,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import proforma.xml21.*;
-import org.eclipse.uml2.uml.Class;
-import umlParser.UmlModelParser;
-import Evaluator.UmlGeneralCriteriaEvaluator;
-import Evaluator.UmlGeneralCriteriaEvaluator.EvaluationResult;
+import Evaluator.EvaluationResult;
+import Evaluator.UmlGeneralCriteriaEvaluatorTest;
+import proformA.dto.CriterionWithWeight;
 
-// Hilfsklasse zum Speichern von Kriterium und Gewichtung
-class CriterionWithWeight {
-    String criterion;
-    double weight;
-
-    public CriterionWithWeight(String criterion, double weight) {
-        this.criterion = criterion;
-        this.weight = weight;
-    }
-}
 
 public class TaskXmlParser {
 
-    // Mapping von task.xml-Kriterien zu UmlGeneralCriteriaEvaluator-Methoden
     private static final Map<String, String> CRITERIA_MAPPING = new HashMap<>();
 
     static {
-        // Namenskonventionen
-        CRITERIA_MAPPING.put("FieldNamingConventions", "checkAttributeNameConvention");
-        CRITERIA_MAPPING.put("MethodNamingConventions", "checkMethodNameConvention");
-        CRITERIA_MAPPING.put("ClassNamingConventions", "checkClassNameConvention");
-
-        // Sichtbarkeit und Getter/Setter
-        CRITERIA_MAPPING.put("attributesShouldBePrivate", "checkAttributesArePrivate");
-        CRITERIA_MAPPING.put("attributesShouldHaveGetters", "checkGettersForPrivateAttributes");
-        CRITERIA_MAPPING.put("attributesShouldHaveSetters", "checkSettersForPrivateAttributes");
-
-        // Konstruktor
-        CRITERIA_MAPPING.put("constructorShouldExist", "checkConstructorPresenceAndConvention");
-
-        // Weitere Kriterien
-        CRITERIA_MAPPING.put("associationConsistency", "checkAssociationConsistency");
-        CRITERIA_MAPPING.put("minimumAttributesOrMethods", "checkMinimumAttributesOrMethods");
-        CRITERIA_MAPPING.put("minimumOneClass", "checkMinimumOneClass");
+        // Schlüssel entsprechen direkt den sub-ref-Werten aus taskv2.xml
+        CRITERIA_MAPPING.put("testMinimumOneClass", "testMinimumOneClass");
+        CRITERIA_MAPPING.put("testClassNameConvention", "testClassNameConvention");
+        CRITERIA_MAPPING.put("testAttributeNameConvention", "testAttributeNameConvention");
+        CRITERIA_MAPPING.put("testAssociationConsistency", "testAssociationConsistency");
+        CRITERIA_MAPPING.put("testAttributesArePrivate", "testAttributesArePrivate");
+        CRITERIA_MAPPING.put("testGettersForPrivateAttributes", "testGettersForPrivateAttributes");
+        CRITERIA_MAPPING.put("testSettersForPrivateAttributes", "testSettersForPrivateAttributes");
+        CRITERIA_MAPPING.put("testMethodNameConvention", "testMethodNameConvention");
+        CRITERIA_MAPPING.put("testConstructorPresenceAndConvention", "testConstructorPresenceAndConvention");
+        CRITERIA_MAPPING.put("testMinimumAttributesOrMethods", "testMinimumAttributesOrMethods");
     }
-
-    /**
-     * Extrahiert die Bewertungskriterien und ihre Gewichtungen aus der task.xml-Datei.
-     *
-     * @param taskXmlPath Pfad zur task.xml-Datei
-     * @return Liste von Kriterien mit ihren Gewichtungen
-     * @throws JAXBException wenn ein Fehler beim Parsen der XML-Datei auftritt
-     */
+    
+    
     public List<CriterionWithWeight> extractCriteriaWithWeights(String taskXmlPath) throws JAXBException {
         List<CriterionWithWeight> criteriaWithWeights = new ArrayList<>();
         System.out.println("Versuche, Datei zu parsen: " + taskXmlPath);
 
-        // Parse die task.xml
         JAXBContext context = JAXBContext.newInstance(TaskType.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         Object taskObj = unmarshaller.unmarshal(new File(taskXmlPath));
@@ -94,12 +75,6 @@ public class TaskXmlParser {
         return criteriaWithWeights;
     }
 
-    /**
-     * Verarbeitet die GradingHints, um Test-Referenzen und ihre Gewichtungen zu extrahieren.
-     *
-     * @param gradingHints Das GradingHints-Objekt aus der task.xml
-     * @param criteriaWithWeights Liste, in die die extrahierten Kriterien und Gewichtungen eingefügt werden
-     */
     private void processGradingHints(GradingHintsType gradingHints, List<CriterionWithWeight> criteriaWithWeights) {
         if (gradingHints == null) {
             System.out.println("GradingHints ist null");
@@ -107,17 +82,13 @@ public class TaskXmlParser {
         }
         System.out.println("Verarbeite GradingHints: root=" + gradingHints.getRoot() + ", combine=" + gradingHints.getCombine());
 
-        // Erstelle eine Map von ID zu GradesNodeType für die spätere Auflösung von Combine-Referenzen
         Map<String, GradesNodeType> nodeMap = new HashMap<>();
-
-        // Füge das root-Element zur Map hinzu
         GradesNodeType root = gradingHints.getRoot();
         if (root != null && root.getId() != null) {
             nodeMap.put(root.getId(), root);
             System.out.println("Root hinzugefügt zur Map: " + root.getId());
         }
 
-        // Füge alle combine-Elemente zur Map hinzu
         List<GradesNodeType> combines = gradingHints.getCombine();
         if (combines != null) {
             for (GradesNodeType combine : combines) {
@@ -128,21 +99,12 @@ public class TaskXmlParser {
             }
         }
 
-        // Verarbeite das root-Element
         if (root != null) {
             System.out.println("Starte Verarbeitung von root: " + root.getId());
             processItems(root, criteriaWithWeights, nodeMap, new HashSet<>());
         }
     }
 
-    /**
-     * Verarbeitet ein GradesNodeType-Objekt, um Test-Referenzen und ihre Gewichtungen zu extrahieren.
-     *
-     * @param gradesNode Das GradesNodeType-Objekt
-     * @param criteriaWithWeights Liste, in die die extrahierten Kriterien und Gewichtungen eingefügt werden
-     * @param nodeMap Map von ID zu GradesNodeType für die Auflösung von Combine-Referenzen
-     * @param visited Set von bereits besuchten Node-IDs, um Zyklen zu vermeiden
-     */
     private void processItems(GradesNodeType gradesNode, List<CriterionWithWeight> criteriaWithWeights,
                              Map<String, GradesNodeType> nodeMap, Set<String> visited) {
         if (gradesNode == null) {
@@ -150,15 +112,13 @@ public class TaskXmlParser {
             return;
         }
 
-        // Verhindere Zyklen durch Überprüfen, ob der Knoten bereits besucht wurde
         String nodeId = gradesNode.getId();
         System.out.println("Verarbeite Node: " + nodeId);
         if (nodeId != null && !visited.add(nodeId)) {
             System.out.println("Zyklus erkannt für Node: " + nodeId);
-            return; // Knoten wurde bereits besucht, Zyklus erkannt
+            return;
         }
 
-        // Verarbeite die Test-Referenzen und Combine-Referenzen
         List<GradesBaseRefChildType> refs = gradesNode.getTestRefOrCombineRef();
         System.out.println("Anzahl Refs: " + (refs != null ? refs.size() : 0));
         if (refs != null) {
@@ -168,7 +128,7 @@ public class TaskXmlParser {
                     GradesTestRefChildType testRef = (GradesTestRefChildType) ref;
                     String subRef = testRef.getSubRef();
                     String refId = testRef.getRef();
-                    double weight = testRef.getWeight() != null ? testRef.getWeight().doubleValue() : 0.0; // Default: 0.0
+                    double weight = testRef.getWeight() != null ? testRef.getWeight().doubleValue() : 0.0;
                     System.out.println("TestRef gefunden: subRef=" + subRef + ", refId=" + refId + ", weight=" + weight);
                     if (subRef != null && CRITERIA_MAPPING.containsKey(subRef)) {
                         String criterion = CRITERIA_MAPPING.get(subRef);
@@ -192,133 +152,140 @@ public class TaskXmlParser {
             }
         }
     }
-
+    
     /**
-     * Gibt die Bewertungsergebnisse in der Konsole aus, basierend auf der gleichen Logik wie ResponseXmlGenerator.
+     * Extrahiert die Musterlösung aus der task.xml.
      *
-     * @param evaluationResult Ergebnis der Bewertung durch den Evaluator
-     * @param criteriaWithWeights Liste der Kriterien mit ihren Gewichtungen
+     * @param taskXmlPath Pfad zur task.xml
+     * @return Byte-Array der Musterlösung (z. B. XMI-Datei), oder null wenn keine Musterlösung gefunden wurde
+     * @throws JAXBException wenn das Parsen fehlschlägt
      */
-    private void printEvaluationResult(EvaluationResult evaluationResult, List<CriterionWithWeight> criteriaWithWeights) {
-        System.out.println("Bewertungsergebnis:");
-        List<String> errors = (evaluationResult != null) ? evaluationResult.getErrors() : new ArrayList<>();
-        List<String> warnings = (evaluationResult != null) ? evaluationResult.getWarnings() : new ArrayList<>();
+    public byte[] extractReferenceModel(String taskXmlPath) throws JAXBException {
+        // Parse die task.xml mit JAXB
+        JAXBContext context = JAXBContext.newInstance(TaskType.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        Object taskObj = unmarshaller.unmarshal(new File(taskXmlPath));
 
-        if (warnings != null && !warnings.isEmpty()) {
-            System.out.println("Warnungen:");
-            for (String warning : warnings) {
-                System.out.println("- " + warning);
+        TaskType task = null;
+        if (taskObj instanceof TaskType) {
+            task = (TaskType) taskObj;
+        } else if (taskObj instanceof JAXBElement) {
+            @SuppressWarnings("unchecked")
+            JAXBElement<TaskType> jaxbElement = (JAXBElement<TaskType>) taskObj;
+            task = jaxbElement.getValue();
+        }
+
+        if (task == null) {
+            return null; // Keine Task gefunden
+        }
+
+        // Extrahiere <model-solutions>
+        ModelSolutionsType modelSolutions = task.getModelSolutions();
+        if (modelSolutions != null && modelSolutions.getModelSolution() != null) {
+            for (ModelSolutionType solution : modelSolutions.getModelSolution()) {
+                // Finde die referenzierte Datei
+                if (solution.getFilerefs() != null && !solution.getFilerefs().getFileref().isEmpty()) {
+                    for (FilerefType fileref : solution.getFilerefs().getFileref()) {
+                        String refId = fileref.getRefid(); // Korrigierter Methodenname
+                        // Suche die Datei in <files>
+                        if (task.getFiles() != null && !task.getFiles().getFile().isEmpty()) {
+                            for (TaskFileType file : task.getFiles().getFile()) {
+                                if (file.getId().equals(refId)) {
+                                    // Prüfe auf <embedded-txt-file>
+                                    if (file.getEmbeddedTxtFile() != null) {
+                                        String content = file.getEmbeddedTxtFile().getValue(); // Korrigierter Methodenname
+                                        return content.getBytes(); // Text als bytes zurückgeben
+                                    }
+                                    // Prüfe auf <embedded-bin-file>
+                                    if (file.getEmbeddedBinFile() != null) {
+                                        byte[] content = file.getEmbeddedBinFile().getValue(); // Korrigierter Methodenname
+                                        return content; // Base64 ist bereits dekodiert als byte[]
+                                    }
+                                    // Prüfe auf <attached-bin-file>
+                                    if (file.getAttachedBinFile() != null) {
+                                        String filePath = file.getAttachedBinFile(); // Direkt als String verwenden
+                                        java.io.File fileOnDisk = new java.io.File(filePath);
+                                        if (fileOnDisk.exists()) {
+                                            try {
+												return java.nio.file.Files.readAllBytes(fileOnDisk.toPath());
+											} catch (IOException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											} // Externe Datei lesen
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        if (errors != null && !errors.isEmpty()) {
-            System.out.println("Fehler:");
-            for (String error : errors) {
-                System.out.println("- " + error);
-            }
-        }
-
-        // Prüfe jedes Kriterium auf Erfüllung
-        for (CriterionWithWeight cw : criteriaWithWeights) {
-            String criterion = cw.criterion;
-            double weight = cw.weight;
-            boolean criterionFulfilled = true;
-
-            switch (criterion) {
-                case "checkAttributeNameConvention":
-                    criterionFulfilled = !warnings.stream().anyMatch(w -> w.contains("Attribut") && w.contains("sollte mit einem Kleinbuchstaben beginnen"));
-                    break;
-                case "checkMethodNameConvention":
-                    criterionFulfilled = !warnings.stream().anyMatch(w -> w.contains("Methode") && w.contains("sollte mit einem Kleinbuchstaben beginnen"));
-                    break;
-                case "checkClassNameConvention":
-                    criterionFulfilled = !warnings.stream().anyMatch(w -> w.contains("Klasse") && w.contains("sollte mit einem Großbuchstaben beginnen"));
-                    break;
-                case "checkAttributesArePrivate":
-                    criterionFulfilled = !warnings.stream().anyMatch(w -> w.contains("Attribut") && w.contains("ist nicht privat"));
-                    break;
-                case "checkGettersForPrivateAttributes":
-                    criterionFulfilled = !warnings.stream().anyMatch(w -> w.contains("Privates Attribut") && w.contains("hat keinen Getter"));
-                    break;
-                case "checkSettersForPrivateAttributes":
-                    criterionFulfilled = !warnings.stream().anyMatch(w -> w.contains("Privates Attribut") && w.contains("hat keinen Setter"));
-                    break;
-                case "checkConstructorPresenceAndConvention":
-                    criterionFulfilled = !warnings.stream().anyMatch(w -> w.contains("Konstruktor") || w.contains("hat keinen Konstruktor"));
-                    break;
-                case "checkAssociationConsistency":
-                    criterionFulfilled = !errors.stream().anyMatch(e -> e.contains("Assoziation") && e.contains("verweist auf nicht existierende Klasse"));
-                    break;
-                case "checkMinimumAttributesOrMethods":
-                    criterionFulfilled = !warnings.stream().anyMatch(w -> w.contains("hat weder Attribute noch Methoden"));
-                    break;
-                case "checkMinimumOneClass":
-                    criterionFulfilled = !errors.stream().anyMatch(e -> e.contains("Modell enthält keine Klassen"));
-                    break;
-                default:
-                    continue; // Überspringe unbekannte Kriterien
-            }
-
-            if (criterionFulfilled) {
-                System.out.println("Erfolge:");
-                System.out.println("- " + criterion.replace("check", "") + " erfüllt (Gewichtung: " + weight + ")");
-            } else {
-                System.out.println("Fehlschläge:");
-                System.out.println("- " + criterion.replace("check", "") + " nicht erfüllt (Gewichtung: 0.0)");
-            }
-        }
+        return null; // Keine Musterlösung gefunden
     }
+    
 
-    /**
-     * Führt die Bewertung durch und generiert die response.xml.
-     *
-     * @param taskXmlPath Pfad zur task.xml-Datei
-     * @param responseXmlPath Pfad, an dem die response.xml gespeichert werden soll
-     * @throws JAXBException wenn ein Fehler beim Parsen oder Schreiben auftritt
-     */
     public static void main(String[] args) {
         TaskXmlParser parser = new TaskXmlParser();
-        UmlModelParser umlParser = new UmlModelParser();
-        UmlGeneralCriteriaEvaluator evaluator = new UmlGeneralCriteriaEvaluator();
         ResponseXmlGenerator generator = new ResponseXmlGenerator();
-        
+
         try {
             // Extrahiere Kriterien und Gewichtungen aus task.xml
-            List<CriterionWithWeight> criteriaWithWeights = parser.extractCriteriaWithWeights("models/task1.xml");
+            List<CriterionWithWeight> criteriaWithWeights = parser.extractCriteriaWithWeights("models/taskv2.xml");
             System.out.println("Extrahierte Kriterien mit Gewichtungen:");
             for (CriterionWithWeight cw : criteriaWithWeights) {
-                System.out.println("- " + cw.criterion + " (weight: " + cw.weight + ")");
+                System.out.println("- " + cw.getCriterion() + " (weight: " + cw.getWeight() + ")");
             }
-
-            // Lade UML-Klassen aus der XMI-Datei
-           // String xmiFilePath = "models/U09xmiTest.xmi";
-            String xmiFilePath = "models/U09VisualParadigmUML2v2.xmi";
-            //String xmiFilePath = "models/U09PapyrusCorrect.uml";
-            List<Class> umlClasses = umlParser.parse(xmiFilePath);
-            System.out.println("Geladene UML-Klassen:");
-            for (Class umlClass : umlClasses) {
-                System.out.println(umlParser.formatUmlClass(umlClass));
-            }
-
-            // Führe die Bewertung durch
-            List<String> criteria = new ArrayList<>();
-            for (CriterionWithWeight cw : criteriaWithWeights) {
-                criteria.add(cw.criterion);
-            }
-            EvaluationResult evaluationResult = evaluator.evaluate(umlClasses, criteria);
-
-            // Ausgabe der Bewertungsergebnisse
-            parser.printEvaluationResult(evaluationResult, criteriaWithWeights);
-
-            // Generiere die response.xml
-            ResponseType response = generator.generateResponse(umlClasses, criteriaWithWeights, evaluationResult);
             
+            
+            // Extrahiere Musterlösung
+            byte[] referenceModelBytes = parser.extractReferenceModel("models/taskv2.xml");
+            if (referenceModelBytes != null) {
+                java.nio.file.Files.write(java.nio.file.Paths.get("models/extracted_reference_model.xmi"), referenceModelBytes);
+                System.out.println("Musterlösung extrahiert und in models/extracted_reference_model.xmi gespeichert.");
+            } else {
+                System.out.println("Keine Musterlösung gefunden.");
+            }
+
+            // Erstelle ein Objekt von UmlGeneralCriteriaEvaluatorTest und initialisiere es
+            UmlGeneralCriteriaEvaluatorTest testEvaluator = new UmlGeneralCriteriaEvaluatorTest();
+            String xmiFilePath = "models/U09PapyrusCorrect.xmi";
+            testEvaluator.initialize(xmiFilePath);
+
+            // Führe die Tests manuell aus
+            Map<String, EvaluationResult> testResults = testEvaluator.runTests(criteriaWithWeights);
+            System.out.println("Testergebnisse:");
+            for (Map.Entry<String,EvaluationResult> entry : testResults.entrySet()) {
+                System.out.println("- " + entry.getKey() + ": " + (entry.getValue().isPassed() ? "Bestanden" : "Fehlgeschlagen") +
+                        (entry.getValue().isPassed() ? "" : " (" + entry.getValue().toString() + ")"));
+            }
+
+            // Konvertiere die Ergebnisse in eine Liste von TestResult-Objekten für ResponseXmlGenerator
+            List<ResponseXmlGenerator.TestResult> resultsForGenerator = new ArrayList<>();
+            for (CriterionWithWeight cw : criteriaWithWeights) {
+                EvaluationResult result = testResults.get(cw.getCriterion());
+                if (result != null) {
+                    resultsForGenerator.add(new ResponseXmlGenerator.TestResult(
+                        cw.getCriterion(),
+                        result.isPassed(),
+                        result.toString(),
+                        result.getWeight() // Gewichtung aus EvaluationResult übernehmen
+                    ));
+                } else {
+                    throw new IllegalStateException("Testergebnis für " + cw.getCriterion() + " nicht gefunden.");
+                }
+            }
+
+            // Generiere die response.xml basierend auf den Testergebnissen
+            ResponseType response = generator.generateResponse(resultsForGenerator);
+
             // Schreibe die response.xml
             JAXBContext context = JAXBContext.newInstance(ResponseType.class);
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.marshal(response, new File("models/response1.xml"));
-            System.out.println("Response.xml erfolgreich erstellt: models/response1.xml");
+            marshaller.marshal(response, new File("models/response3.xml"));
+            System.out.println("Response.xml erfolgreich erstellt: models/response3.xml");
         } catch (JAXBException e) {
             e.printStackTrace();
         } catch (Exception e) {

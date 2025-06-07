@@ -14,49 +14,7 @@ import java.util.Set;
  * Die Klasse {@code UmlGeneralCriteriaEvaluator} prüft ein UML-Modell anhand allgemeiner Kriterien.
  */
 public class UmlGeneralCriteriaEvaluator {
-    // Klasse für Bewertungshinweise (Fehler und Warnungen)
-    public static class EvaluationResult {
-        private List<String> errors = new ArrayList<>();
-        private List<String> warnings = new ArrayList<>();
-
-        public void addError(String error) {
-            errors.add(error);
-        }
-
-        public void addWarning(String warning) {
-            warnings.add(warning);
-        }
-
-        public List<String> getErrors() {
-            return errors;
-        }
-
-        public List<String> getWarnings() {
-            return warnings;
-        }
-
-        public boolean hasErrors() {
-            return !errors.isEmpty();
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            if (!errors.isEmpty()) {
-                sb.append("Fehler:\n");
-                for (String error : errors) {
-                    sb.append("- ").append(error).append("\n");
-                }
-            }
-            if (!warnings.isEmpty()) {
-                sb.append("Warnungen:\n");
-                for (String warning : warnings) {
-                    sb.append("- ").append(warning).append("\n");
-                }
-            }
-            return sb.toString();
-        }
-    }
+    
 
     /**
      * Prüft, ob das Modell mindestens eine Klasse enthält.

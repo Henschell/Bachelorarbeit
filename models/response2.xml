@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response xmlns="urn:proforma:v2.1" lang="de">
+    <separate-test-feedback>
+        <submission-feedback-list/>
+        <tests-response>
+            <test-response id="test1">
+                <subtests-response>
+                    <subtest-response id="testMinimumOneClass">
+                        <test-result>
+                            <result>
+<score>0.5</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Das Modell enthält mindestens eine Klasse.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testClassNameConvention">
+                        <test-result>
+                            <result>
+<score>0.5</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Alle Klassennamen beginnen korrekt mit Großbuchstaben.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testAttributeNameConvention">
+                        <test-result>
+                            <result>
+<score>0.5</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Alle Attributnamen beginnen korrekt mit Kleinbuchstaben.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testAssociationConsistency">
+                        <test-result>
+                            <result>
+<score>0.5</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Alle Assoziationen sind konsistent.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testAttributesArePrivate">
+                        <test-result>
+                            <result>
+<score>0.5</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Alle Attribute sind privat.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testGettersForPrivateAttributes">
+                        <test-result>
+                            <result>
+<score>0.0</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Einige private Attribute haben keine Getter. Details: Warnungen:
+- Privates Attribut strasse in Klasse Adresse hat keinen Getter.
+- Privates Attribut hausnummer in Klasse Adresse hat keinen Getter.
+</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testSettersForPrivateAttributes">
+                        <test-result>
+                            <result>
+<score>0.0</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Einige private Attribute haben keine Setter. Details: Warnungen:
+- Privates Attribut name in Klasse Einwohner hat keinen Setter.
+- Privates Attribut wohnort in Klasse Einwohner hat keinen Setter.
+- Privates Attribut strasse in Klasse Adresse hat keinen Setter.
+- Privates Attribut hausnummer in Klasse Adresse hat keinen Setter.
+</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testMethodNameConvention">
+                        <test-result>
+                            <result>
+<score>0.5</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Alle Methodennamen entsprechen den Konventionen.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testConstructorPresenceAndConvention">
+                        <test-result>
+                            <result>
+<score>0.5</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Alle Klassen haben einen korrekten Konstruktor.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testMinimumAttributesOrMethods">
+                        <test-result>
+                            <result>
+<score>0.5</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Alle Klassen haben mindestens ein Attribut oder eine Methode.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                </subtests-response>
+            </test-response>
+        </tests-response>
+    </separate-test-feedback>
+    <files/>
+    <response-meta-data>
+        <response-datetime>2025-06-01T02:15:11.4434238+02:00</response-datetime>
+        <grader-engine name="UMLGrader" version="1.0"/>
+    </response-meta-data>
+</response>

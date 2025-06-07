@@ -255,7 +255,7 @@ public class UmlModelParser {
         try {
             UmlModelParser parser = new UmlModelParser();
             // Pfad zur XMI-Datei anpassen
-            String xmiFilePath = "models/U09Papyrus.uml";
+            String xmiFilePath = "models/extracted_reference_model.xmi";
             System.out.println("ProFormA submission.xml erstellt: models/submission2.xml");
             List<Class> umlClasses = parser.parse(xmiFilePath);
             for (Class umlClass : umlClasses) {

@@ -102,6 +102,6 @@
         </root>
     </grading-hints>
     <meta-data>
-        <custom xmlns="http://example.com/metadata">Kurs: UML101</custom>
+        <custom xmlns="http://example.com/metadata">Kurs: PR2</custom>
     </meta-data>
 </task>
