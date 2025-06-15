@@ -4,8 +4,8 @@ import proforma.xml21.*;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -14,45 +14,25 @@ import javax.xml.datatype.XMLGregorianCalendar;
 public class ResponseXmlGenerator {
 
     public static class TestResult {
-        private final String testName;
+        private final String testId; // ID des übergeordneten Tests (z. B. "test1" oder "test2")
+        private final String subtestId; // ID des Untertests (z. B. "testMinimumOneClass")
         private final boolean passed;
-        private final String failureMessage;
-        private final double weight; // Gewichtung hinzugefügt
+        private final String feedback;
+        private final double weight;
 
-        public TestResult(String testName, boolean passed, String failureMessage, double weight) {
-            this.testName = testName;
+        public TestResult(String testId, String subtestId, boolean passed, String feedback, double weight) {
+            this.testId = testId;
+            this.subtestId = subtestId;
             this.passed = passed;
-            this.failureMessage = failureMessage;
+            this.feedback = feedback;
             this.weight = weight;
         }
 
-        public String getTestName() {
-            return testName;
-        }
-
-        public boolean isPassed() {
-            return passed;
-        }
-
-        public String getFailureMessage() {
-            return failureMessage;
-        }
-
-        public double getWeight() {
-            return weight;
-        }
-    }
-
-    private static class CriterionMapping {
-        String testMethod;
-        String successMessage;
-        String failureMessage;
-
-        CriterionMapping(String testMethod, String successMessage, String failureMessage) {
-            this.testMethod = testMethod;
-            this.successMessage = successMessage;
-            this.failureMessage = failureMessage;
-        }
+        public String getTestId() { return testId; }
+        public String getSubtestId() { return subtestId; }
+        public boolean isPassed() { return passed; }
+        public String getFeedback() { return feedback; }
+        public double getWeight() { return weight; }
     }
 
     public ResponseType generateResponse(List<TestResult> testResults) {
@@ -85,81 +65,50 @@ public class ResponseXmlGenerator {
         metaData.setGraderEngine(graderEngine);
         response.setResponseMetaData(metaData);
 
-        // Erstelle eine Liste von Kriterien-Mappings
-        List<CriterionMapping> criteriaMapping = new ArrayList<>();
-        criteriaMapping.add(new CriterionMapping("testMinimumOneClass",
-                "Das Modell enthält mindestens eine Klasse.", "Das Modell enthält keine Klassen."));
-        criteriaMapping.add(new CriterionMapping("testClassNameConvention",
-                "Alle Klassennamen beginnen korrekt mit Großbuchstaben.", "Einige Klassennamen beginnen nicht mit Großbuchstaben."));
-        criteriaMapping.add(new CriterionMapping("testAttributeNameConvention",
-                "Alle Attributnamen beginnen korrekt mit Kleinbuchstaben.", "Einige Attributnamen beginnen nicht mit Kleinbuchstaben."));
-        criteriaMapping.add(new CriterionMapping("testAssociationConsistency",
-                "Alle Assoziationen sind konsistent.", "Einige Assoziationen sind nicht konsistent."));
-        criteriaMapping.add(new CriterionMapping("testAttributesArePrivate",
-                "Alle Attribute sind privat.", "Einige Attribute sind nicht privat."));
-        criteriaMapping.add(new CriterionMapping("testGettersForPrivateAttributes",
-                "Alle privaten Attribute haben Getter.", "Einige private Attribute haben keine Getter."));
-        criteriaMapping.add(new CriterionMapping("testSettersForPrivateAttributes",
-                "Alle privaten Attribute haben Setter.", "Einige private Attribute haben keine Setter."));
-        criteriaMapping.add(new CriterionMapping("testMethodNameConvention",
-                "Alle Methodennamen entsprechen den Konventionen.", "Einige Methodennamen entsprechen nicht den Konventionen."));
-        criteriaMapping.add(new CriterionMapping("testConstructorPresenceAndConvention",
-                "Alle Klassen haben einen korrekten Konstruktor.", "Einige Klassen haben keinen oder einen inkorrekten Konstruktor."));
-        criteriaMapping.add(new CriterionMapping("testMinimumAttributesOrMethods",
-                "Alle Klassen haben mindestens ein Attribut oder eine Methode.", "Einige Klassen haben weder Attribute noch Methoden."));
+        // Gruppiere die TestResults nach testId
+        Map<String, List<TestResult>> groupedResults = testResults.stream()
+                .collect(Collectors.groupingBy(TestResult::getTestId));
 
-        // Erstelle ein einziges test-response-Element für test1
-        TestResponseType testResponse = new TestResponseType();
-        testResponse.setId("test1");
+        // Definiere die gewünschte Reihenfolge der testIds
+        List<String> preferredOrder = Arrays.asList("test1", "test2"); // test1 zuerst, dann test2
 
-        // Erstelle ein subtests-response-Element
-        SubtestsResponseType subtestsResponse = new SubtestsResponseType();
-        testResponse.setSubtestsResponse(subtestsResponse);
+        // Erstelle test-response-Elemente in der gewünschten Reihenfolge
+        for (String testId : preferredOrder) {
+            if (groupedResults.containsKey(testId)) {
+                List<TestResult> resultsForTest = groupedResults.get(testId);
 
-        // Füge subtest-response-Elemente für jeden Untertest hinzu
-        for (CriterionMapping mapping : criteriaMapping) {
-            String testMethod = mapping.testMethod;
-            String successMessage = mapping.successMessage;
-            String failureMessage = mapping.failureMessage;
+                TestResponseType testResponse = new TestResponseType();
+                testResponse.setId(testId);
 
-            TestResult testResult = testResults.stream()
-                    .filter(result -> result.getTestName().equals(testMethod))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("Testergebnis für " + testMethod + " nicht gefunden."));
+                SubtestsResponseType subtestsResponse = new SubtestsResponseType();
+                testResponse.setSubtestsResponse(subtestsResponse);
 
-            double weight = testResult.getWeight(); // Gewichtung direkt aus TestResult holen
+                // Erstelle subtest-response-Elemente für jeden Untertest
+                for (TestResult testResult : resultsForTest) {
+                    SubtestResponseType subtestResponse = new SubtestResponseType();
+                    subtestResponse.setId(testResult.getSubtestId());
 
-            boolean criterionFulfilled = testResult.isPassed();
-            String feedbackMessage = criterionFulfilled ? successMessage : failureMessage;
+                    TestResultType testResultType = new TestResultType();
+                    ResultType result = new ResultType();
+                    result.setScore(BigDecimal.valueOf(testResult.isPassed() ? testResult.getWeight() : 0.0));
+                    testResultType.setResult(result);
 
-            if (!criterionFulfilled && !testResult.getFailureMessage().isEmpty()) {
-                feedbackMessage += " Details: " + testResult.getFailureMessage();
+                    FeedbackListType feedbackList = new FeedbackListType();
+                    FeedbackType feedback = new FeedbackType();
+                    FeedbackType.Content content = new FeedbackType.Content();
+                    content.setValue(testResult.getFeedback());
+                    content.setFormat("plaintext");
+                    feedback.setContent(content);
+                    feedbackList.getStudentFeedback().add(feedback);
+                    testResultType.setFeedbackList(feedbackList);
+
+                    subtestResponse.setTestResult(testResultType);
+                    subtestsResponse.getSubtestResponse().add(subtestResponse);
+                }
+
+                testsResponse.getTestResponse().add(testResponse);
             }
-
-            // Erstelle ein subtest-response-Element für den Untertest
-            SubtestResponseType subtestResponse = new SubtestResponseType();
-            subtestResponse.setId(testMethod); // Verwende den sub-ref-Wert als ID
-
-            TestResultType testResultType = new TestResultType();
-            ResultType result = new ResultType();
-            result.setScore(BigDecimal.valueOf(criterionFulfilled ? weight : 0.0));
-            testResultType.setResult(result);
-
-            FeedbackListType feedbackList = new FeedbackListType();
-            FeedbackType feedback = new FeedbackType();
-            FeedbackType.Content content = new FeedbackType.Content();
-            content.setValue(feedbackMessage);
-            content.setFormat("plaintext");
-            feedback.setContent(content);
-            feedbackList.getStudentFeedback().add(feedback);
-            testResultType.setFeedbackList(feedbackList);
-
-            subtestResponse.setTestResult(testResultType);
-            subtestsResponse.getSubtestResponse().add(subtestResponse);
         }
-
-        // Füge das test-response-Element zur tests-response hinzu
-        testsResponse.getTestResponse().add(testResponse);
 
         return response;
     }

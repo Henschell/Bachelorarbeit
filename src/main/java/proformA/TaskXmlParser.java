@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import proforma.xml21.*;
 import Evaluator.EvaluationResult;
-import Evaluator.UmlGeneralCriteriaEvaluatorTest;
+import Evaluator.UmlCriteriaEvaluatorTest;
 import proformA.dto.CriterionWithWeight;
 
 
@@ -40,6 +40,7 @@ public class TaskXmlParser {
         CRITERIA_MAPPING.put("testMethodNameConvention", "testMethodNameConvention");
         CRITERIA_MAPPING.put("testConstructorPresenceAndConvention", "testConstructorPresenceAndConvention");
         CRITERIA_MAPPING.put("testMinimumAttributesOrMethods", "testMinimumAttributesOrMethods");
+        CRITERIA_MAPPING.put("testModelComparison", "testModelComparison");
     }
     
     
@@ -225,71 +226,4 @@ public class TaskXmlParser {
         return null; // Keine Musterlösung gefunden
     }
     
-
-    public static void main(String[] args) {
-        TaskXmlParser parser = new TaskXmlParser();
-        ResponseXmlGenerator generator = new ResponseXmlGenerator();
-
-        try {
-            // Extrahiere Kriterien und Gewichtungen aus task.xml
-            List<CriterionWithWeight> criteriaWithWeights = parser.extractCriteriaWithWeights("models/taskv2.xml");
-            System.out.println("Extrahierte Kriterien mit Gewichtungen:");
-            for (CriterionWithWeight cw : criteriaWithWeights) {
-                System.out.println("- " + cw.getCriterion() + " (weight: " + cw.getWeight() + ")");
-            }
-            
-            
-            // Extrahiere Musterlösung
-            byte[] referenceModelBytes = parser.extractReferenceModel("models/taskv2.xml");
-            if (referenceModelBytes != null) {
-                java.nio.file.Files.write(java.nio.file.Paths.get("models/extracted_reference_model.xmi"), referenceModelBytes);
-                System.out.println("Musterlösung extrahiert und in models/extracted_reference_model.xmi gespeichert.");
-            } else {
-                System.out.println("Keine Musterlösung gefunden.");
-            }
-
-            // Erstelle ein Objekt von UmlGeneralCriteriaEvaluatorTest und initialisiere es
-            UmlGeneralCriteriaEvaluatorTest testEvaluator = new UmlGeneralCriteriaEvaluatorTest();
-            String xmiFilePath = "models/U09PapyrusCorrect.xmi";
-            testEvaluator.initialize(xmiFilePath);
-
-            // Führe die Tests manuell aus
-            Map<String, EvaluationResult> testResults = testEvaluator.runTests(criteriaWithWeights);
-            System.out.println("Testergebnisse:");
-            for (Map.Entry<String,EvaluationResult> entry : testResults.entrySet()) {
-                System.out.println("- " + entry.getKey() + ": " + (entry.getValue().isPassed() ? "Bestanden" : "Fehlgeschlagen") +
-                        (entry.getValue().isPassed() ? "" : " (" + entry.getValue().toString() + ")"));
-            }
-
-            // Konvertiere die Ergebnisse in eine Liste von TestResult-Objekten für ResponseXmlGenerator
-            List<ResponseXmlGenerator.TestResult> resultsForGenerator = new ArrayList<>();
-            for (CriterionWithWeight cw : criteriaWithWeights) {
-                EvaluationResult result = testResults.get(cw.getCriterion());
-                if (result != null) {
-                    resultsForGenerator.add(new ResponseXmlGenerator.TestResult(
-                        cw.getCriterion(),
-                        result.isPassed(),
-                        result.toString(),
-                        result.getWeight() // Gewichtung aus EvaluationResult übernehmen
-                    ));
-                } else {
-                    throw new IllegalStateException("Testergebnis für " + cw.getCriterion() + " nicht gefunden.");
-                }
-            }
-
-            // Generiere die response.xml basierend auf den Testergebnissen
-            ResponseType response = generator.generateResponse(resultsForGenerator);
-
-            // Schreibe die response.xml
-            JAXBContext context = JAXBContext.newInstance(ResponseType.class);
-            Marshaller marshaller = context.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.marshal(response, new File("models/response3.xml"));
-            System.out.println("Response.xml erfolgreich erstellt: models/response3.xml");
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

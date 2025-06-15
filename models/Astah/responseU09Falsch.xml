@@ -5,66 +5,6 @@
         <tests-response>
             <test-response id="test1">
                 <subtests-response>
-                    <subtest-response id="testMinimumOneClass">
-                        <test-result>
-                            <result>
-<score>0.5</score>
-                            </result>
-                            <feedback-list>
-<student-feedback>
-    <content format="plaintext">Das Modell enthält mindestens eine Klasse.</content>
-</student-feedback>
-                            </feedback-list>
-                        </test-result>
-                    </subtest-response>
-                    <subtest-response id="testClassNameConvention">
-                        <test-result>
-                            <result>
-<score>0.5</score>
-                            </result>
-                            <feedback-list>
-<student-feedback>
-    <content format="plaintext">Alle Klassennamen beginnen korrekt mit Großbuchstaben.</content>
-</student-feedback>
-                            </feedback-list>
-                        </test-result>
-                    </subtest-response>
-                    <subtest-response id="testAttributeNameConvention">
-                        <test-result>
-                            <result>
-<score>0.5</score>
-                            </result>
-                            <feedback-list>
-<student-feedback>
-    <content format="plaintext">Alle Attributnamen beginnen korrekt mit Kleinbuchstaben.</content>
-</student-feedback>
-                            </feedback-list>
-                        </test-result>
-                    </subtest-response>
-                    <subtest-response id="testAssociationConsistency">
-                        <test-result>
-                            <result>
-<score>0.5</score>
-                            </result>
-                            <feedback-list>
-<student-feedback>
-    <content format="plaintext">Alle Assoziationen sind konsistent.</content>
-</student-feedback>
-                            </feedback-list>
-                        </test-result>
-                    </subtest-response>
-                    <subtest-response id="testAttributesArePrivate">
-                        <test-result>
-                            <result>
-<score>0.5</score>
-                            </result>
-                            <feedback-list>
-<student-feedback>
-    <content format="plaintext">Alle Attribute sind privat.</content>
-</student-feedback>
-                            </feedback-list>
-                        </test-result>
-                    </subtest-response>
                     <subtest-response id="testGettersForPrivateAttributes">
                         <test-result>
                             <result>
@@ -72,10 +12,11 @@
                             </result>
                             <feedback-list>
 <student-feedback>
-    <content format="plaintext">Einige private Attribute haben keine Getter. Details: Warnungen:
-- Privates Attribut strasse in Klasse Adresse hat keinen Getter.
-- Privates Attribut hausnummer in Klasse Adresse hat keinen Getter.
-</content>
+    <content format="plaintext">Warnungen:
+Privates Attribut Name in Klasse einwohner hat keinen Getter.
+Privates Attribut wohnort in Klasse einwohner hat keinen Getter.
+Privates Attribut strasse in Klasse Adresse hat keinen Getter.
+Privates Attribut hausnummer in Klasse Adresse hat keinen Getter.</content>
 </student-feedback>
                             </feedback-list>
                         </test-result>
@@ -87,24 +28,11 @@
                             </result>
                             <feedback-list>
 <student-feedback>
-    <content format="plaintext">Einige private Attribute haben keine Setter. Details: Warnungen:
-- Privates Attribut name in Klasse Einwohner hat keinen Setter.
-- Privates Attribut wohnort in Klasse Einwohner hat keinen Setter.
-- Privates Attribut strasse in Klasse Adresse hat keinen Setter.
-- Privates Attribut hausnummer in Klasse Adresse hat keinen Setter.
-</content>
-</student-feedback>
-                            </feedback-list>
-                        </test-result>
-                    </subtest-response>
-                    <subtest-response id="testMethodNameConvention">
-                        <test-result>
-                            <result>
-<score>0.5</score>
-                            </result>
-                            <feedback-list>
-<student-feedback>
-    <content format="plaintext">Alle Methodennamen entsprechen den Konventionen.</content>
+    <content format="plaintext">Warnungen:
+Privates Attribut Name in Klasse einwohner hat keinen Setter.
+Privates Attribut wohnort in Klasse einwohner hat keinen Setter.
+Privates Attribut strasse in Klasse Adresse hat keinen Setter.
+Privates Attribut hausnummer in Klasse Adresse hat keinen Setter.</content>
 </student-feedback>
                             </feedback-list>
                         </test-result>
@@ -112,11 +40,75 @@
                     <subtest-response id="testConstructorPresenceAndConvention">
                         <test-result>
                             <result>
-<score>0.5</score>
+<score>0.0</score>
                             </result>
                             <feedback-list>
 <student-feedback>
-    <content format="plaintext">Alle Klassen haben einen korrekten Konstruktor.</content>
+    <content format="plaintext">Warnungen:
+Konstruktor einwohner in Klasse einwohner sollte mit einem Großbuchstaben beginnen.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testAttributeNameConvention">
+                        <test-result>
+                            <result>
+<score>0.0</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Warnungen:
+Attribut Name in Klasse einwohner sollte mit einem Kleinbuchstaben beginnen.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testMethodNameConvention">
+                        <test-result>
+                            <result>
+<score>0.0</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Warnungen:
+Methode Name in Klasse einwohner sollte mit einem Kleinbuchstaben beginnen.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testMinimumOneClass">
+                        <test-result>
+                            <result>
+<score>0.1</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Das Modell enthält mindestens eine Klasse.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testClassNameConvention">
+                        <test-result>
+                            <result>
+<score>0.0</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Warnungen:
+Klasse einwohner sollte mit einem Großbuchstaben beginnen.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testAttributesArePrivate">
+                        <test-result>
+                            <result>
+<score>0.1</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Alle Attribute sind privat.</content>
 </student-feedback>
                             </feedback-list>
                         </test-result>
@@ -124,11 +116,41 @@
                     <subtest-response id="testMinimumAttributesOrMethods">
                         <test-result>
                             <result>
-<score>0.5</score>
+<score>0.1</score>
                             </result>
                             <feedback-list>
 <student-feedback>
     <content format="plaintext">Alle Klassen haben mindestens ein Attribut oder eine Methode.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                    <subtest-response id="testAssociationConsistency">
+                        <test-result>
+                            <result>
+<score>0.1</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Alle Assoziationen sind konsistent.</content>
+</student-feedback>
+                            </feedback-list>
+                        </test-result>
+                    </subtest-response>
+                </subtests-response>
+            </test-response>
+            <test-response id="test2">
+                <subtests-response>
+                    <subtest-response id="testModelComparison">
+                        <test-result>
+                            <result>
+<score>0.0</score>
+                            </result>
+                            <feedback-list>
+<student-feedback>
+    <content format="plaintext">Fehler:
+Klassen stimmen nicht überein: Klasse einwohner ähnelt Einwohner (Distanz: 1.0), aber Namen unterschiedlich.
+</content>
 </student-feedback>
                             </feedback-list>
                         </test-result>
@@ -139,7 +161,7 @@
     </separate-test-feedback>
     <files/>
     <response-meta-data>
-        <response-datetime>2025-06-01T02:15:11.4434238+02:00</response-datetime>
+        <response-datetime>2025-06-16T00:49:40.7266322+02:00</response-datetime>
         <grader-engine name="UMLGrader" version="1.0"/>
     </response-meta-data>
 </response>

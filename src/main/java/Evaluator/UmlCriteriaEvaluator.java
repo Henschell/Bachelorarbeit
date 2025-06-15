@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * Die Klasse {@code UmlGeneralCriteriaEvaluator} prüft ein UML-Modell anhand allgemeiner Kriterien.
  */
-public class UmlGeneralCriteriaEvaluator {
+public class UmlCriteriaEvaluator {
     
 
     /**

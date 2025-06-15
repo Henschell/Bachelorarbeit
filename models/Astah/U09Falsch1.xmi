@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmlns:uml="http://www.omg.org/spec/UML/20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701">
+  <uml:Model name="AstahProU09Falsch1" xmi:id="_9SkEcEo6EfC5CP6hdbJwRA">
+    <packagedElement name="U09Falsch1" xmi:id="_9SkEcUo6EfC5CP6hdbJwRA" xmi:type="uml:Package">
+      <packagedElement name="einwohner" xmi:id="_9SkrgEo6EfC5CP6hdbJwRA" xmi:type="uml:Class">
+        <ownedAttribute name="Name" type="_9SkrmEo6EfC5CP6hdbJwRA" visibility="private" xmi:id="_9SkrgUo6EfC5CP6hdbJwRA" xmi:type="uml:Property"/>
+        <ownedAttribute association="_9SkrlUo6EfC5CP6hdbJwRA" name="wohnort" type="_9SkrjEo6EfC5CP6hdbJwRA" visibility="private" xmi:id="_9Skrgko6EfC5CP6hdbJwRA" xmi:type="uml:Property">
+          <lowerValue xmi:id="_9Skrg0o6EfC5CP6hdbJwRA" xmi:type="uml:LiteralInteger"/>
+          <upperValue value="1" xmi:id="_9SkrhEo6EfC5CP6hdbJwRA" xmi:type="uml:LiteralUnlimitedNatural"/>
+        </ownedAttribute>
+        <ownedOperation name="Name" visibility="public" xmi:id="_9SkrhUo6EfC5CP6hdbJwRA" xmi:type="uml:Operation">
+          <ownedParameter direction="return" type="_9SkrmEo6EfC5CP6hdbJwRA" xmi:id="_9Skrhko6EfC5CP6hdbJwRA" xmi:type="uml:Parameter"/>
+        </ownedOperation>
+        <ownedOperation name="einwohner" visibility="public" xmi:id="_9Skrh0o6EfC5CP6hdbJwRA" xmi:type="uml:Operation">
+          <ownedParameter direction="return" xmi:id="_9SkriEo6EfC5CP6hdbJwRA" xmi:type="uml:Parameter"/>
+        </ownedOperation>
+        <ownedOperation name="zieheUm" visibility="public" xmi:id="_9SkriUo6EfC5CP6hdbJwRA" xmi:type="uml:Operation">
+          <ownedParameter direction="return" type="_9Skrmko6EfC5CP6hdbJwRA" xmi:id="_9Skriko6EfC5CP6hdbJwRA" xmi:type="uml:Parameter"/>
+          <ownedParameter name="wohnort" type="_9SkrjEo6EfC5CP6hdbJwRA" xmi:id="_9Skri0o6EfC5CP6hdbJwRA" xmi:type="uml:Parameter"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement name="Adresse" xmi:id="_9SkrjEo6EfC5CP6hdbJwRA" xmi:type="uml:Class">
+        <ownedAttribute name="strasse" type="_9SkrmEo6EfC5CP6hdbJwRA" visibility="private" xmi:id="_9SkrjUo6EfC5CP6hdbJwRA" xmi:type="uml:Property"/>
+        <ownedAttribute name="hausnummer" type="_9Skrm0o6EfC5CP6hdbJwRA" visibility="private" xmi:id="_9Skrjko6EfC5CP6hdbJwRA" xmi:type="uml:Property"/>
+        <ownedAttribute association="_9SkrlUo6EfC5CP6hdbJwRA" name="" type="_9SkrgEo6EfC5CP6hdbJwRA" visibility="private" xmi:id="_9Skrj0o6EfC5CP6hdbJwRA" xmi:type="uml:Property"/>
+        <ownedOperation name="getAdresse" visibility="public" xmi:id="_9SkrkEo6EfC5CP6hdbJwRA" xmi:type="uml:Operation">
+          <ownedParameter direction="return" type="_9SkrmEo6EfC5CP6hdbJwRA" xmi:id="_9SkrkUo6EfC5CP6hdbJwRA" xmi:type="uml:Parameter"/>
+        </ownedOperation>
+        <ownedOperation name="Adresse" visibility="public" xmi:id="_9Skrkko6EfC5CP6hdbJwRA" xmi:type="uml:Operation">
+          <ownedParameter direction="return" xmi:id="_9Skrk0o6EfC5CP6hdbJwRA" xmi:type="uml:Parameter"/>
+          <ownedParameter name="strasse" type="_9SkrmEo6EfC5CP6hdbJwRA" xmi:id="_9SkrlEo6EfC5CP6hdbJwRA" xmi:type="uml:Parameter"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement memberEnd="_9Skrj0o6EfC5CP6hdbJwRA _9Skrgko6EfC5CP6hdbJwRA" name="" xmi:id="_9SkrlUo6EfC5CP6hdbJwRA" xmi:type="uml:Association"/>
+    </packagedElement>
+    <packagedElement name="java" xmi:id="_9Skrlko6EfC5CP6hdbJwRA" xmi:type="uml:Package">
+      <packagedElement name="lang" xmi:id="_9Skrl0o6EfC5CP6hdbJwRA" xmi:type="uml:Package">
+        <packagedElement name="String" xmi:id="_9SkrmEo6EfC5CP6hdbJwRA" xmi:type="uml:Class"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement name="PrimitiveTypes" xmi:id="_9SkrmUo6EfC5CP6hdbJwRA" xmi:type="uml:Package">
+      <packagedElement name="void" xmi:id="_9Skrmko6EfC5CP6hdbJwRA" xmi:type="uml:PrimitiveType"/>
+      <packagedElement name="int" xmi:id="_9Skrm0o6EfC5CP6hdbJwRA" xmi:type="uml:PrimitiveType"/>
+    </packagedElement>
+  </uml:Model>
+</xmi:XMI>
