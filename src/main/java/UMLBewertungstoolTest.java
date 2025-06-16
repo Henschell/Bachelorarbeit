@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.io.File;
@@ -19,19 +20,21 @@ public class UMLBewertungstoolTest {
         TaskXmlParser parser = new TaskXmlParser();
         ResponseXmlGenerator generator = new ResponseXmlGenerator();
         String taskXmlMitMuster = "models/taskWithSample.xml";
-        String studentLösung = "models/Astah/U09Falsch1.xmi";
-        String responseXmlPath = "models/Astah/responseU09Falsch.xml";
+        String studentLösung = "models/U09Astah.xmi";
+        //String responseXmlPath = "models/Astah/responseU09Falsch.xml";
+          String responseXmlPath = "models/Astah/responseU09Correct.xml";
+        // String studentLösung = "models/Astah/U09Falsch1.xmi";
 
         try {
             // Extrahiere Kriterien und Gewichtungen aus task.xml
-            List<CriterionWithWeight> criteriaWithWeights = parser.extractCriteriaWithWeights(taskXmlMitMuster,false);
+            List<CriterionWithWeight> criteriaWithWeights = parser.extractCriteriaWithWeights(taskXmlMitMuster, false);
             System.out.println("Extrahierte Kriterien mit Gewichtungen:");
             for (CriterionWithWeight cw : criteriaWithWeights) {
-                System.out.println("- " + cw.getCriterion() + " (weight: " + cw.getWeight() + ")");
+                System.out.println("- " + cw.getCriterion() + " (weight: " + cw.getWeight() + ", refId: " + cw.getRefId() + ")");
             }
 
             // Extrahiere Musterlösung
-            byte[] referenceModelBytes = parser.extractReferenceModel(taskXmlMitMuster,false);
+            byte[] referenceModelBytes = parser.extractReferenceModel(taskXmlMitMuster, false);
             if (referenceModelBytes != null) {
                 java.nio.file.Files.write(java.nio.file.Paths.get("models/extracted_reference_modelv2.xmi"), referenceModelBytes);
                 System.out.println("Musterlösung extrahiert und in models/extracted_reference_modelv2.xmi gespeichert.\n");
@@ -43,14 +46,27 @@ public class UMLBewertungstoolTest {
             UmlCriteriaEvaluatorTest testEvaluator = new UmlCriteriaEvaluatorTest();
             testEvaluator.initialize(studentLösung);
 
+            // Teile Kriterien in test1 und test2 auf
+            Map<String, List<CriterionWithWeight>> testCriteria = new HashMap<>();
+            testCriteria.put("test1", new ArrayList<>());
+            testCriteria.put("test2", new ArrayList<>());
+
+            for (CriterionWithWeight cw : criteriaWithWeights) {
+                if ("test2".equals(cw.getRefId())) {
+                    testCriteria.get("test2").add(cw);
+                } else {
+                    testCriteria.get("test1").add(cw); // test1 als Default
+                }
+            }
+
             // Führe die allgemeinen Tests aus (test1)
-            Map<String, EvaluationResult> test1Results = testEvaluator.runAllgemeineTests(criteriaWithWeights);
+            Map<String, EvaluationResult> test1Results = testEvaluator.runAllgemeineTests(testCriteria.get("test1"));
             System.out.println("Testergebnisse (test1):");
             test1Results.forEach((key, value) -> System.out.println("- " + key + ": " + (value.isPassed() ? "Bestanden" : "Fehlgeschlagen") +
                     (value.isPassed() ? "" : " (" + value.toString() + ")")));
 
             // Führe den Musterlösungsvergleich aus (test2)
-            Map<String, EvaluationResult> test2Results = testEvaluator.runModelComparisonTest(criteriaWithWeights, studentLösung, "models/extracted_reference_modelv2.xmi");
+            Map<String, EvaluationResult> test2Results = testEvaluator.runModelComparisonTest(testCriteria.get("test2"), studentLösung, "models/extracted_reference_modelv2.xmi");
             if (!test2Results.isEmpty()) {
                 System.out.println("Testergebnisse (test2):");
                 test2Results.forEach((key, value) -> System.out.println("- " + key + ": " + (value.isPassed() ? "Bestanden" : "Fehlgeschlagen") +
@@ -62,11 +78,15 @@ public class UMLBewertungstoolTest {
             // Füge test1-Ergebnisse hinzu (nur allgemeine Kriterien)
             test1Results.forEach((criterion, result) -> {
                 if (!criterion.equals("testModelComparison")) { // Verhindere, dass testModelComparison hier landet
-                    results.add(new ResponseXmlGenerator.TestResult("test1", criterion, result.isPassed(), result.getFeedbackText(), result.getWeight()));
+                    CriterionWithWeight cw = findCriterionByName(criteriaWithWeights, criterion);
+                    results.add(new ResponseXmlGenerator.TestResult("test1", criterion, result.isPassed(), result.getFeedbackText(), cw != null ? cw.getWeight() : 0.0));
                 }
             });
             // Füge test2-Ergebnisse hinzu (nur testModelComparison)
-            test2Results.forEach((criterion, result) -> results.add(new ResponseXmlGenerator.TestResult("test2", criterion, result.isPassed(), result.getFeedbackText(), result.getWeight())));
+            test2Results.forEach((criterion, result) -> {
+                CriterionWithWeight cw = findCriterionByName(criteriaWithWeights, criterion);
+                results.add(new ResponseXmlGenerator.TestResult("test2", criterion, result.isPassed(), result.getFeedbackText(), cw != null ? cw.getWeight() : 0.0));
+            });
 
             // Generiere die response.xml
             ResponseType response = generator.generateResponse(results);
@@ -82,5 +102,15 @@ public class UMLBewertungstoolTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // Hilfsmethode, um ein CriterionWithWeight-Objekt anhand des Namens zu finden
+    private static CriterionWithWeight findCriterionByName(List<CriterionWithWeight> criteria, String criterionName) {
+        for (CriterionWithWeight cw : criteria) {
+            if (cw.getCriterion().equals(criterionName)) {
+                return cw;
+            }
+        }
+        return null;
     }
 }
