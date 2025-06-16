@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_NC7mYBDWEfCcOKKy0hc0LQ" name="U07">
+  <packagedElement xmi:type="uml:Model" xmi:id="_uRzZABl8EfCqDZbADY2iqg" name="PrimitiveTypes" URI="http://www.omg.org/spec/PrimitiveTypes/20131001">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_uR0AEBl8EfCqDZbADY2iqg" name="Boolean">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_uR0AERl8EfCqDZbADY2iqg" annotatedElement="_uR0AEBl8EfCqDZbADY2iqg">
+        <body>Boolean is used for logical expressions, consisting of the predefined values true and false.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_uR0AEhl8EfCqDZbADY2iqg" name="Integer">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_uR0AExl8EfCqDZbADY2iqg" annotatedElement="_uR0AEhl8EfCqDZbADY2iqg">
+        <body>Integer is a primitive type representing integer values.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_uR0AFBl8EfCqDZbADY2iqg" name="Real">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_uR0AFRl8EfCqDZbADY2iqg" annotatedElement="_uR0AFBl8EfCqDZbADY2iqg">
+        <body>Real is a primitive type representing the mathematical concept of real.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_uR0AFhl8EfCqDZbADY2iqg" name="String">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_uR0AFxl8EfCqDZbADY2iqg" annotatedElement="_uR0AFhl8EfCqDZbADY2iqg">
+        <body>String is a sequence of characters in some suitable character set used to display information about the model. Character sets may include non-Roman alphabets and characters.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_uR0AGBl8EfCqDZbADY2iqg" name="UnlimitedNatural">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_uR0AGRl8EfCqDZbADY2iqg" annotatedElement="_uR0AGBl8EfCqDZbADY2iqg">
+        <body>UnlimitedNatural is a primitive type representing unlimited natural values.</body>
+      </ownedComment>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_uR0AGhl8EfCqDZbADY2iqg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_uR0AGxl8EfCqDZbADY2iqg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Ecore.profile.uml#_z1OFcHjqEdy8S4Cr8Rc_NA"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Ecore.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_uR0AHBl8EfCqDZbADY2iqg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_uR0AHRl8EfCqDZbADY2iqg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_5r1ZYBDWEfCcOKKy0hc0LQ" name="Einwohner" visibility="public">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_qtGTwBDXEfCcOKKy0hc0LQ" name="name" visibility="private" type="_uR0AFhl8EfCqDZbADY2iqg" aggregation="composite"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_TTWe0hnaEfClTfToKBy9gg" name="wohnort" visibility="private" type="_PcXtgBDXEfCcOKKy0hc0LQ" association="_TTVQsBnaEfClTfToKBy9gg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_TTXF4BnaEfClTfToKBy9gg"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_TTXF4RnaEfClTfToKBy9gg" value="1"/>
+    </ownedAttribute>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_MPSRABDYEfCcOKKy0hc0LQ" name="Einwohner">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_9Rj4ABDYEfCcOKKy0hc0LQ" name="name" visibility="public" type="_uR0AFhl8EfCqDZbADY2iqg" effect="create"/>
+    </ownedOperation>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_VeNCMBDZEfCcOKKy0hc0LQ" name="zieheUm" visibility="public">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_cD2ggBDZEfCcOKKy0hc0LQ" name="wohnort" visibility="public" type="_PcXtgBDXEfCcOKKy0hc0LQ" effect="update"/>
+    </ownedOperation>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_Y0FaMDjsEfCdr4XlWz4whA" name="getName">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_0nkvQDjsEfCdr4XlWz4whA" type="_uR0AFhl8EfCqDZbADY2iqg" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_237oUDjsEfCdr4XlWz4whA" name="getWohnort">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_FNkRIDjtEfCdr4XlWz4whA" type="_PcXtgBDXEfCcOKKy0hc0LQ" direction="return"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_PcXtgBDXEfCcOKKy0hc0LQ" name="Adresse">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_jk5egBmJEfClTfToKBy9gg" name="strasse" visibility="private" type="_uR0AFhl8EfCqDZbADY2iqg"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_3KPpoBnaEfClTfToKBy9gg" name="hausnummer" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+    </ownedAttribute>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_g32m4DjtEfCdr4XlWz4whA" name="Adresse">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_l6rAgDjtEfCdr4XlWz4whA" name="strasse" type="_uR0AFhl8EfCqDZbADY2iqg"/>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_pr85wDjtEfCdr4XlWz4whA" name="hausnummer">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_0CZwMDjtEfCdr4XlWz4whA" name="getAdresse">
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_K1nCQDjuEfCdr4XlWz4whA" type="_uR0AFhl8EfCqDZbADY2iqg" direction="return"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_TTVQsBnaEfClTfToKBy9gg" visibility="public" memberEnd="_TTWe0hnaEfClTfToKBy9gg _TTXF4hnaEfClTfToKBy9gg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_TTWe0BnaEfClTfToKBy9gg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_TTWe0RnaEfClTfToKBy9gg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_TTXF4hnaEfClTfToKBy9gg" type="_5r1ZYBDWEfCcOKKy0hc0LQ" association="_TTVQsBnaEfClTfToKBy9gg"/>
+  </packagedElement>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_3_8ZoBl5EfCqDZbADY2iqg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_4ACgQBl5EfCqDZbADY2iqg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>
+    </eAnnotations>
+    <appliedProfile xmi:type="uml:Profile" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#ActionLanguage"/>
+  </profileApplication>
+</uml:Model>

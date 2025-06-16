@@ -39,7 +39,7 @@ public class UmlCriteriaEvaluatorTest {
         }
 
         UmlModelParser parser = new UmlModelParser();
-        umlClasses = parser.parse(xmiFilePath);
+        umlClasses = parser.parse(xmiFilePath,false);
 
         classNames = new HashSet<>();
         for (Class umlClass : umlClasses) {
@@ -296,7 +296,7 @@ public class UmlCriteriaEvaluatorTest {
                 try {
                     System.out.println("Vergleich gestartet: Abgabe (" + submissionPath + ") vs. Musterlösung (" + referenceModelPath + ")");
                     UmlModelParser submissionParser = new UmlModelParser();
-                    List<Class> submissionClasses = submissionParser.parse(submissionPath);
+                    List<Class> submissionClasses = submissionParser.parse(submissionPath,false);
                     if (submissionClasses == null || submissionClasses.isEmpty()) {
                         result.addError("Abgabe konnte nicht geladen werden.");
                         System.out.println("Fehler: Abgabe konnte nicht geladen werden.");
@@ -306,7 +306,7 @@ public class UmlCriteriaEvaluatorTest {
                     System.out.println("Abgabe geladen: " + submissionClasses.size() + " Klassen gefunden.");
 
                     UmlModelParser referenceParser = new UmlModelParser();
-                    List<Class> referenceClasses = referenceParser.parse(referenceModelPath);
+                    List<Class> referenceClasses = referenceParser.parse(referenceModelPath,false);
                     if (referenceClasses == null || referenceClasses.isEmpty()) {
                         result.addError("Musterlösung konnte nicht geladen werden.");
                         System.out.println("Fehler: Musterlösung konnte nicht geladen werden.");

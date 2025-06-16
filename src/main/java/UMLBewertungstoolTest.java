@@ -7,15 +7,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.eclipse.uml2.uml.Class;
-
 import Evaluator.EvaluationResult;
 import Evaluator.UmlCriteriaEvaluatorTest;
 import proformA.ResponseXmlGenerator;
 import proformA.TaskXmlParser;
 import proformA.dto.CriterionWithWeight;
 import proforma.xml21.ResponseType;
-import umlParser.UmlModelParser;
 
 public class UMLBewertungstoolTest {
     public static void main(String[] args) {
@@ -27,17 +24,17 @@ public class UMLBewertungstoolTest {
 
         try {
             // Extrahiere Kriterien und Gewichtungen aus task.xml
-            List<CriterionWithWeight> criteriaWithWeights = parser.extractCriteriaWithWeights(taskXmlMitMuster);
+            List<CriterionWithWeight> criteriaWithWeights = parser.extractCriteriaWithWeights(taskXmlMitMuster,false);
             System.out.println("Extrahierte Kriterien mit Gewichtungen:");
             for (CriterionWithWeight cw : criteriaWithWeights) {
                 System.out.println("- " + cw.getCriterion() + " (weight: " + cw.getWeight() + ")");
             }
 
             // Extrahiere Musterlösung
-            byte[] referenceModelBytes = parser.extractReferenceModel(taskXmlMitMuster);
+            byte[] referenceModelBytes = parser.extractReferenceModel(taskXmlMitMuster,false);
             if (referenceModelBytes != null) {
                 java.nio.file.Files.write(java.nio.file.Paths.get("models/extracted_reference_modelv2.xmi"), referenceModelBytes);
-                System.out.println("Musterlösung extrahiert und in models/extracted_reference_modelv2.xmi gespeichert.");
+                System.out.println("Musterlösung extrahiert und in models/extracted_reference_modelv2.xmi gespeichert.\n");
             } else {
                 System.out.println("Keine Musterlösung gefunden.");
             }
